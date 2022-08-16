@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="Shortcut Icon" type="image/x-icon" href="./assets/icons/favicon.ico" />
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<title>Facturacion "IKONOS"</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="{% static 'js/material.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+	<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="srylesheet">
+    
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+ <script>
+        var nc = $.noConflict(true);
+    nc(document).ready( function () {
+    nc('#tpelicula').DataTable();
+} );
+</script>
+</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(".js-example-tags").select2({
+tags: true
+});
+ </script>
+<body>
+			
+
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content2-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Registrar Factura</h4>
+            </div>
+            <div class="modal-body">
+              <form id="registrarForm" class="Login" method="POST" >{%csrf_token%}
+                <div>
+                    <label for="Identificacion">Cliente:</label>
+                    <select class="form-control" name="nombreCliente">
+                      {% for c in listaPersona%}
+                      <option value="{{c.tipo_identificacion}}">{{c.nombre}} {{c.apellido}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+				  <div>
+                    <label for="nombreProducto">Producto:</label>
+                    <select class="form-control" name="nombreProducto">
+                      {% for d in listaProducto%}
+                      <option value="{{d.nombre}}">{{d.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+			<div>
+              <label for="">Nro Factura</label>
+              <input type="text" name="nro" id="nro" placeholder="Ingrese nro factura"/>
+            </div>
+            <div>
+              <label for="">Cantidad</label>
+              <input type="text" name="cantidad" id="cantidad" placeholder="Ingrese cantidad del producto"/>
+            </div>
+            <div>
+              <label for="">Costo</label>
+              <input type="text" name="costo" id="costo" placeholder="Ingrese costo producto"/>
+            </div>
+            <div>
+              <label for="">Fecha</date>
+              <input type="date" name="fecha" id="fecha" placeholder="Ingrese fecha"/>
+            </div>
+            <div class="form">
+              <button type="submit" class="btn btn-success" value="submit">Registrar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  
+          </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+		
+	  </div>	  
+	<nav class="full-width NavBar">
+		<div class="full-width NavBar-logo text-tittles text-center">
+			<figure>
+				<img src="{% static 'assets/img/logo.png' %}" alt="MaterialTemplate" class="img-responsive">
+			</figure>
+		</div>
+		<ul class="full-width list-unstyled NavBar-nav">
+		<li><a href="/facturacion">Inicio</a></li>
+		</ul>
+		<i class="zmdi zmdi-more-vert visible-on-phone btn-menu-mobile"></i>
+	</nav>
+	<section class="full-width" style="padding: 70px 0;">
+		<h1 class="text-center text-tittles">SISTEMA DE FACTURACION "IKONOS"</h1>
+		<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+			<div class="mdl-tabs__tab-bar">
+			</div>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Registrar Factura</button>
+			<div class="mdl-tabs__panel is-active" id="web">
+				<h2 class="text-center text-tittles">Factura</h2>
+				<div class="mdl-grid">
+
+					<table class="table table-striped" id="tFactura">
+						<thead>
+							<tr>
+								<th>Nro Factura</th>
+								<th>Nombre Cliente</th>
+								<th>Tene Cliente</th>
+								<th>Producto</th>
+								<th>Cantidad</th>
+								<th>Costo Unitario</th>
+								<th>Fecha</th>
+							</tr>
+							</thead>
+							{% for c in listaFactura%}
+								<tr>
+									<th>
+										{{c.nro}}
+
+									</th>
+									<th>
+										{{c.cliente.nombre}}
+
+									</th>
+									<th>
+										{{c.cliente.apellido}}
+
+									</th>
+									<th>
+										{{c.producto.nombre}}
+
+									</th>
+									<th>
+										{{c.cantidad}}
+
+									</th>
+									<th>
+										{{c.costo}}
+
+									</th>
+									<th>
+										{{c.fecha}}
+
+									</th>
+								</tr>
+								{% endfor %}
+						</table>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	<footer class="mdl-mega-footer">
+		<div class="mdl-mega-footer__middle-section">
+			
+	  	</div>
+		<div class="mdl-mega-footer__bottom-section">
+			<div class="mdl-logo">&copy; JOL'S Fact | 10e</div>
+			<ul class="mdl-mega-footer__link-list">
+				<li><a href="#!"></a></li>
+				<li><a href="#!"> facturacion IKONOS</a></li>
+			</ul>
+		</div>
+	</footer>
+</body>
+</html>
